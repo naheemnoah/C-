@@ -2,36 +2,101 @@ using System.Collections.Generic;
 using System;
 namespace Gradebook
 {
-    public class Book 
+    public class Book
     {
         private List<double> grades;
-        public string Name;
-        public Book (string name) {
+        private string name;
+
+        // class property
+        public string Name {
+            get{
+                return name;
+            }set {
+                if(!String.IsNullOrEmpty(value)){
+                    name = value;
+                } else {
+                    throw new ArgumentException($"Invalid {nameof(value)}");
+                }
+            }
+        }
+        public Book(string name)
+        {
             grades = new List<double>();
-            Name = name;
+            this.name = name;
+        }
+
+        public void AddGrade(char letter)
+        {
+            switch (letter)
+            {
+                case 'A':
+                    AddGrade(90);
+                    break;
+                case 'B':
+                    AddGrade(80);
+                    break;
+                case 'C':
+                    AddGrade(70);
+                    break;
+                default:
+                    AddGrade(0);
+                    break;
+            }
         }
         public void AddGrade(double grade)
         {
-            grades.Add(grade);
+            if(grade <= 100 && grade >= 0){
+                grades.Add(grade);
+            }
+            else {
+                throw new ArgumentException($"Invalid {nameof(grade)}");
+            }
+            
         }
 
-        public Statistics getStatistics(){
+        public Statistics getStatistics()
+        {
             var result = new Statistics();
             result.average = 0.0;
             result.high = double.MinValue;
             result.low = double.MaxValue;
 
-            foreach(var grade in grades){
-                if (grade > result.high) {
-                    result.high = grade;
+            for (var index = 0; index < grades.Count; index++)
+            {
+                if (grades[index] > result.high)
+                {
+                    result.high = grades[index];
                 }
-                else if (grade < result.low){
-                    result.low = grade;
+                else if (grades[index] < result.low)
+                {
+                    result.low = grades[index];
                 }
-                result.average += grade;
+                result.average += grades[index];
             }
 
             result.average /= grades.Count;
+
+            switch(result.average){
+                case var d when d >= 90:
+                    result.letter = 'A';
+                    break;
+
+                case var d when d >= 80:
+                    result.letter = 'B';
+                    break;
+
+                case var d when d >= 70:
+                    result.letter = 'C';
+                    break;
+
+                case var d when d >= 60:
+                    result.letter = 'D';
+                    break;
+
+                default:
+                    result.letter = 'F';
+                    break;
+            }
             return result;
         }
 
