@@ -8,9 +8,16 @@ namespace Gradebook
     
     
     public class NamedObject{
+
+        // property
         public string Name{
             get;
             set;
+        }
+
+        // constructor
+        public NamedObject(string name){
+            Name = name;
         }
     }
     
@@ -18,16 +25,15 @@ namespace Gradebook
     public class Book : NamedObject
     {
         private List<double> grades;
-        private string name;
 
         // declaring the delegate event
         public event GradeAddedDelegate GradeAdded;
 
-        // constructor
-        public Book(string name)
+        // constructor referencing base class
+        public Book(string name) : base(name)
         {
             grades = new List<double>();
-            this.name = name;
+            Name = name;
         }
 
         public void AddGrade(char letter)
