@@ -6,23 +6,33 @@ namespace Gradebook.Tests
 
     //delegate method syntax
     public delegate string WriteLogDelegate(string message);
+
     public class TypeTests
     {
+        int count = 0;
 
         [Fact]
         public void writeLogDelegateCanPointToMethod(){
             // declare delegate method
-            WriteLogDelegate log;
+            WriteLogDelegate log = ReturnMessage;
 
             //initialize delegate method
-            log = ReturnMessage;
+            log += ReturnMessage;
+            log += IncrementCount;
 
             var result = log("Hello!");
-            Assert.Equal("Hello!", result);
+
+            Assert.Equal(3, count);
         }
 
         //method defined in the form of delegate
         string ReturnMessage(string message){
+            count++;
+            return message;
+        }
+
+        string IncrementCount(string message){
+            count++;
             return message;
         }
 
