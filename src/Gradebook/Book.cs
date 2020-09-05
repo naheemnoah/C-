@@ -21,22 +21,39 @@ namespace Gradebook
         }
     }
 
+
+    // interface
+    public interface IBook {
+        void AddGrade(double grade);
+        Statistics GetStatistics();
+        String Name {get;}
+        event GradeAddedDelegate GradeAdded;
+
+    }
+
     //abstract class
-    public abstract class Book : NamedObject {
+    public abstract class Book : NamedObject, IBook {
         protected Book(string name) : base(name)
         {
         }
 
+        public virtual event GradeAddedDelegate GradeAdded;
+
         public abstract void AddGrade(double grade);
+
+        public virtual Statistics GetStatistics()
+        {
+            throw new NotImplementedException();
+        }
     }
     
-    // inheriting a NamedObject
+    // inheritance
     public class InMemoryBook : Book
     {
         private List<double> grades;
 
         // declaring the delegate event
-        public event GradeAddedDelegate GradeAdded;
+        public override event GradeAddedDelegate GradeAdded;
 
         // constructor referencing base class
         public InMemoryBook(string name) : base(name)
@@ -81,7 +98,7 @@ namespace Gradebook
 
     
 
-        public Statistics getStatistics()
+        public override Statistics GetStatistics()
         {
             var result = new Statistics();
             result.average = 0.0;

@@ -16,7 +16,7 @@ namespace Gradebook
 
             EnterGrades(book);
 
-            var stats = book.getStatistics();
+            var stats = book.GetStatistics();
 
             Console.WriteLine($"The average result is {stats.average,1}");
             Console.WriteLine($"The highest grade is {stats.high}");
@@ -25,7 +25,8 @@ namespace Gradebook
 
         }
 
-        private static void EnterGrades(InMemoryBook book)
+        // method receiving an interface
+        private static void EnterGrades(IBook book)
         {
             while (true)
             {
