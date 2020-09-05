@@ -35,7 +35,7 @@ namespace Gradebook
 
     //abstract class
     public abstract class Book : NamedObject, IBook {
-        protected Book(string name) : base(name)
+        public Book(string name) : base(name)
         {
         }
 
@@ -56,16 +56,28 @@ namespace Gradebook
 
         public override void AddGrade(double grade)
         {
-            // using IDisposable interface implicitly
+            // using IDisposable interface implicitly on Disposeable objects
             using(var writer = File.AppendText($"{Name}.txt")){
                 writer.WriteLine(grade);
+                if(GradeAdded != null){
+                    GradeAdded(this, new EventArgs());
+                }
             }
         
         }
 
         public override Statistics GetStatistics()
         {
-            throw new NotImplementedException();
+           var result = new Statistics();
+           using(var reader = File.OpenText($"{Name}.txt")){
+               var line = reader.ReadLine();
+               while(line != null){
+                   var number = double.Parse(line);
+                   result.Add(number);
+                   line = reader.ReadLine();
+               }
+           }
+           return result;
         }
     }
 
@@ -123,45 +135,11 @@ namespace Gradebook
         public override Statistics GetStatistics()
         {
             var result = new Statistics();
-            result.average = 0.0;
-            result.high = double.MinValue;
-            result.low = double.MaxValue;
+            
 
             for (var index = 0; index < grades.Count; index++)
             {
-                if (grades[index] > result.high)
-                {
-                    result.high = grades[index];
-                }
-                else if (grades[index] < result.low)
-                {
-                    result.low = grades[index];
-                }
-                result.average += grades[index];
-            }
-
-            result.average /= grades.Count;
-
-            switch(result.average){
-                case var d when d >= 90:
-                    result.letter = 'A';
-                    break;
-
-                case var d when d >= 80:
-                    result.letter = 'B';
-                    break;
-
-                case var d when d >= 70:
-                    result.letter = 'C';
-                    break;
-
-                case var d when d >= 60:
-                    result.letter = 'D';
-                    break;
-
-                default:
-                    result.letter = 'F';
-                    break;
+                result.Add(grades[index]);
             }
             return result;
         }
