@@ -10,7 +10,13 @@ namespace Gradebook
         {
 
             var book = new Book("Scott's grade book");
-
+            
+            // calling the action on delegate
+            book.GradeAdded += OnGradeAdded;
+            book.GradeAdded += OnGradeAdded;
+            book.GradeAdded -= OnGradeAdded;
+            book.GradeAdded += OnGradeAdded;
+            
             while(true){
                 Console.Write("Enter grade or 'q' to quit: ");
                 var input = Console.ReadLine();
@@ -41,6 +47,11 @@ namespace Gradebook
             Console.WriteLine($"The lowest grade is {stats.low}");
             Console.WriteLine($"The letter grade is {stats.letter}");
 
+        }
+
+        //action on delegate GradeAdded
+        static void OnGradeAdded(object sender, EventArgs e){
+            Console.WriteLine("A grade was added");
         }
     }
 } 

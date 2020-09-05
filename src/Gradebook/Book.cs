@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using System;
 namespace Gradebook
 {
+
+    // declaring a delegate for an event
+    public delegate void GradeAddedDelegate(object sender, EventArgs args);
     public class Book
     {
         private List<double> grades;
@@ -19,6 +22,11 @@ namespace Gradebook
                 }
             }
         }
+
+        // declaring the delegate event
+        public event GradeAddedDelegate GradeAdded;
+
+        // constructor
         public Book(string name)
         {
             grades = new List<double>();
@@ -47,12 +55,19 @@ namespace Gradebook
         {
             if(grade <= 100 && grade >= 0){
                 grades.Add(grade);
+                if(GradeAdded != null){
+                    // invoke GradeAdded delegate. this = sender
+                    // action performed in program.cs
+                    GradeAdded(this, new EventArgs());
+                }
             }
             else {
                 throw new ArgumentException($"Invalid {nameof(grade)}");
             }
             
         }
+
+    
 
         public Statistics getStatistics()
         {
