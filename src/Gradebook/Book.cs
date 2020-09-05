@@ -56,10 +56,11 @@ namespace Gradebook
 
         public override void AddGrade(double grade)
         {
-            var writer = File.AppendText($"{Name}.txt");
-            writer.WriteLine(grade);
-            // clean up and free resource
-            writer.Dispose();
+            // using IDisposable interface implicitly
+            using(var writer = File.AppendText($"{Name}.txt")){
+                writer.WriteLine(grade);
+            }
+        
         }
 
         public override Statistics GetStatistics()
