@@ -13,9 +13,6 @@ namespace Gradebook
             
             // calling the action on delegate
             book.GradeAdded += OnGradeAdded;
-            book.GradeAdded += OnGradeAdded;
-            book.GradeAdded -= OnGradeAdded;
-            book.GradeAdded += OnGradeAdded;
             
             while(true){
                 Console.Write("Enter grade or 'q' to quit: ");

@@ -5,23 +5,20 @@ namespace Gradebook
 
     // declaring a delegate for an event
     public delegate void GradeAddedDelegate(object sender, EventArgs args);
-    public class Book
+    
+    
+    public class NamedObject{
+        public string Name{
+            get;
+            set;
+        }
+    }
+    
+    // inheriting a NamedObject
+    public class Book : NamedObject
     {
         private List<double> grades;
         private string name;
-
-        // class property
-        public string Name {
-            get{
-                return name;
-            }set {
-                if(!String.IsNullOrEmpty(value)){
-                    name = value;
-                } else {
-                    throw new ArgumentException($"Invalid {nameof(value)}");
-                }
-            }
-        }
 
         // declaring the delegate event
         public event GradeAddedDelegate GradeAdded;
