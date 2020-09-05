@@ -83,8 +83,8 @@ namespace Gradebook.Tests
 
         // ref or out is a keyword that allowes pointing to the same reference location
         // out keyword ensures compulsory initialization in the method
-        private void GetBookSetName(out Book book, string name){
-            book = new Book(name);
+        private void GetBookSetName(out InMemoryBook book, string name){
+            book = new InMemoryBook(name);
         }
 
         [Fact]
@@ -97,8 +97,8 @@ namespace Gradebook.Tests
             
         }
 
-        private void GetBookSetName(Book book, string name){
-            book = new Book(name);
+        private void GetBookSetName(InMemoryBook book, string name){
+            book = new InMemoryBook(name);
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace Gradebook.Tests
             
         }
 
-        private void SetName(Book book, string name){
+        private void SetName(InMemoryBook book, string name){
             book.Name = name;
         }
 
@@ -127,8 +127,8 @@ namespace Gradebook.Tests
             Assert.NotSame(book1, book2);
         }
 
-        Book GetBook(string name) {
-            return new Book(name);
+        InMemoryBook GetBook(string name) {
+            return new InMemoryBook(name);
         }
 
         [Fact]
